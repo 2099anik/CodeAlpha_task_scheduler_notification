@@ -12,13 +12,7 @@ import {useRouter} from 'next/navigation'
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAGj0_nr0Yz8EsGWd0T6Jkmr2zxvOy58K8",
-  authDomain: "task-notification-ee6e8.firebaseapp.com",
-  projectId: "task-notification-ee6e8",
-  storageBucket: "task-notification-ee6e8.appspot.com",
-  messagingSenderId: "632522449844",
-  appId: "1:632522449844:web:f7db3141845bdac49108e1",
-  measurementId: "G-TJGS67JHKW"
+  //your own
 };
 
 function HomePage() {
