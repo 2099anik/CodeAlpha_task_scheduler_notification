@@ -1,95 +1,64 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client"
 
-export default function Home() {
+
+// pages/index.js (or any client-side page)
+
+import { useEffect } from 'react';
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken } from 'firebase/messaging';
+import Link from 'next/link';
+import {useRouter} from 'next/navigation'
+
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAGj0_nr0Yz8EsGWd0T6Jkmr2zxvOy58K8",
+  authDomain: "task-notification-ee6e8.firebaseapp.com",
+  projectId: "task-notification-ee6e8",
+  storageBucket: "task-notification-ee6e8.appspot.com",
+  messagingSenderId: "632522449844",
+  appId: "1:632522449844:web:f7db3141845bdac49108e1",
+  measurementId: "G-TJGS67JHKW"
+};
+
+function HomePage() {
+
+  const router = useRouter();
+  useEffect(() => {
+    if ('Notification' in window) {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          const app = initializeApp(firebaseConfig);
+          const messaging = getMessaging(app);
+
+          getToken(messaging, {
+            vapidKey: "BOaHpu32z7PsY4RwahRFMgTYnLZtjY3PV3Df1JTDdAKDLO5Qb9nSNAvzjX_NipukZzwdg-zrGRPtALCWAcsmJJY",
+          }).then((currentToken) => {
+            if (currentToken) {
+              console.log("Current FCM Token:", currentToken);
+            } else {
+              console.log("Unable to get FCM token");
+            }
+          }).catch((error) => {
+            console.error("Error getting FCM token:", error);
+          });
+        } else {
+          console.log("Do not have permission!");
+        }
+      });
+    } else {
+      console.log("Notification API not supported.");
+    }
+  }, []);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    <div>
+      <h2>task scheduler</h2>
+      <div><button onClick={()=>router.push("/Task")}>add task</button></div>
+    </div>
+  );
 }
+
+export default HomePage;
+
+
